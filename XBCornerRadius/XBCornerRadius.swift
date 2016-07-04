@@ -63,13 +63,7 @@ public extension UIImageView {
      - parameter radius: 圆角半径
      */
     public func xb_setCornerRadius(radius: CGFloat) {
-        cornerRadius = radius
-        isAsyncProcess = true
-        
-        if !hasAddObserver {
-            addImageViewObservers()
-            hasAddObserver = true
-        }
+        xb_setCornerRadius(radius, isAsync: true)
     }
     
     /**
@@ -139,11 +133,11 @@ public extension UIImageView {
     }
     
     private func processImage(newImage: UIImage) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0)
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
         guard let context = UIGraphicsGetCurrentContext() else {return newImage}
-        let path = UIBezierPath(roundedRect: self.bounds, cornerRadius: CGFloat(self.cornerRadius))
+        let path = UIBezierPath(roundedRect: bounds, cornerRadius: CGFloat(cornerRadius))
         path.addClip()
-        self.layer.renderInContext(context)
+        layer.renderInContext(context)
         let processedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
