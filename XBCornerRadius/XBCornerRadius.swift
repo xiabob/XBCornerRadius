@@ -9,11 +9,11 @@
 import UIKit
 
 
-private var kCornerRadiusAssociatedKey = "xb_kCornerRadiusAssociatedKey"
-private var kProcessedImageAssociatedKey = "xb_kProcessedImageAssociatedKey"
-private var kBoolAssociatedKey = "xb_kBoolAssociatedKey"
-private var kHasAddObserverAssociatedKey = "xb_kHasAddObserverAssociatedKey"
-private var kIsAsyncProcessAssociatedKey = "xb_kIsAsyncProcessAssociatedKey"
+private var kCornerRadiusAssociatedKey      = "xb_kCornerRadiusAssociatedKey"
+private var kProcessedImageAssociatedKey    = "xb_kProcessedImageAssociatedKey"
+private var kHasProcessedImageAssociatedKey = "xb_kHasProcessedImageAssociatedKey"
+private var kHasAddObserverAssociatedKey    = "xb_kHasAddObserverAssociatedKey"
+private var kIsAsyncProcessAssociatedKey    = "xb_kIsAsyncProcessAssociatedKey"
 
 private let kImageKeyPath = "image"
 
@@ -106,14 +106,14 @@ public extension UIImageView {
             guard let newImage = changeDic[NSKeyValueChangeNewKey] as? UIImage else {return}
             
             //避免死循环
-            let boolValue = (objc_getAssociatedObject(newImage, &kBoolAssociatedKey) as? NSNumber)?.boolValue
-            if boolValue != nil && boolValue! {
+            let hasProcessed = (objc_getAssociatedObject(newImage, &kHasProcessedImageAssociatedKey) as? NSNumber)?.boolValue
+            if hasProcessed != nil && hasProcessed! {
                 return
             }
             
             let processedImage = objc_getAssociatedObject(newImage, &kProcessedImageAssociatedKey) as? UIImage
             if processedImage != nil {
-                objc_setAssociatedObject(processedImage, &kBoolAssociatedKey, NSNumber(bool: true), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(processedImage, &kHasProcessedImageAssociatedKey, NSNumber(bool: true), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 self.image = processedImage
                 return
             }
@@ -141,7 +141,7 @@ public extension UIImageView {
         let processedImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        objc_setAssociatedObject(processedImage, &kBoolAssociatedKey, NSNumber(bool: true), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(processedImage, &kHasProcessedImageAssociatedKey, NSNumber(bool: true), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         objc_setAssociatedObject(newImage, &kProcessedImageAssociatedKey, processedImage, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
         return processedImage
