@@ -15,11 +15,11 @@ class BigImageViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
         
         let bigImage = UIImageView(frame: CGRect(x: 10, y: 74, width: view.bounds.size.width-20, height: view.bounds.size.height-84))
-        bigImage.xb_setCornerRadius(30, isAsync: false)
-        bigImage.kf_setImageWithURL(NSURL(string: link + "#big")!)
+        bigImage.xb_setCornerRadius(30)
+        bigImage.kf.setImage(with: URL(string: link + "#big")!)
         view.addSubview(bigImage)
     }
 

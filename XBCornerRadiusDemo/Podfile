@@ -2,5 +2,5 @@
 use_frameworks!
 
 target ‘XBCornerRadiusDemo’ do
-	pod 'Kingfisher', '~> 2.4.1'
+	pod 'Kingfisher'
 end

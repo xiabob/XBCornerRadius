@@ -13,16 +13,16 @@ private let height: CGFloat = 60
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private lazy var tableView: UITableView = { [unowned self] in
+    fileprivate lazy var tableView: UITableView = { [unowned self] in
         let tableView: UITableView = UITableView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.view.bounds.size))
-        tableView.registerClass(imageCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(imageCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = height
         tableView.dataSource = self
         tableView.delegate = self
         return tableView
     }()
     
-    private var imageUrls = ["http://img.taopic.com/uploads/allimg/120502/128207-120502121H969.jpg",
+    fileprivate var imageUrls = ["http://img.taopic.com/uploads/allimg/120502/128207-120502121H969.jpg",
                              "http://photocdn.sohu.com/20110707/Img312698512.jpg",
                              "http://www.jinmalvyou.com/kindeditor/attached/image/20130618/20130618140325_74663.jpg",
                              "http://hiphotos.baidu.com/lvpics/pic/item/5243fbf2b2119313f800d65e64380cd790238d98.jpg",
@@ -42,14 +42,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         view.addSubview(tableView)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.hidden = true
+        tableView.isHidden = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.hidden = false
+        tableView.isHidden = false
     }
     
     deinit {
@@ -57,22 +57,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     //MARK: - UITableViewDataSource
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 80
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! imageCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! imageCell
 
         let link = imageUrls[indexPath.row%imageUrls.count]
-        if let url = NSURL(string: link) {
+        if let url = URL(string: link) {
             cell.updateWithUrl(url)
         }
         
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let link = imageUrls[indexPath.row%imageUrls.count]
         let vc = BigImageViewController()
         vc.link = link
@@ -86,21 +86,25 @@ class imageCell: UITableViewCell {
     lazy var firstImage: UIImageView = {
         let view = UIImageView(frame: CGRect(x: 12, y: 5, width: height-10, height: height-10))
         view.xb_setCornerRadius((height-10)/2)
-        view.contentMode = .ScaleAspectFill
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
     lazy var secondImage: UIImageView = { [unowned self] in
         let view = UIImageView(frame: CGRect(x: self.firstImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
-        view.xb_setCornerRadius((height-10)/2)
-        view.contentMode = .ScaleAspectFill
+        view.xb_setCornerRadius(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight))
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
     lazy var thirdImage: UIImageView = { [unowned self] in
-        let view = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
+        let view: UIImageView = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
         view.xb_setCornerRadius((height-10)/2)
-        view.contentMode = .ScaleAspectFill
+        view.xb_setCornerRadii(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
@@ -115,12 +119,12 @@ class imageCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateWithUrl(url: NSURL) {
-        firstImage.kf_setImageWithURL(url)
+    func updateWithUrl(_ url: URL) {
+        firstImage.kf.setImage(with: url)
         
-        secondImage.kf_setImageWithURL(url)
+        secondImage.kf.setImage(with: url)
 
-        thirdImage.kf_setImageWithURL(url)
+        thirdImage.kf.setImage(with: url)
     }
 }
 
