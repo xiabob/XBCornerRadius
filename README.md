@@ -1,5 +1,5 @@
 # XBCornerRadius
-Make cornerRadius for UIImageView by swift
+Make cornerRadius for UIView by swift
 
 # Performance
 iPhone 4s and iOS8
@@ -11,15 +11,11 @@ iPhone 4s and iOS8
 
 # Requirements
 * iOS7.0+
-* Xcode 7.3+ 
+* Xcode 8+ 
 
 # Usage
 <pre>
-bigImage.xb_setCornerRadius(30)
-</pre>
-or
-<pre>
-bigImage.xb_setCornerRadius(30, isAsync: false)
+view.xb_setCornerRadius(30)
 </pre>
 
 more details in [XBCornerRadiusDemo](https://github.com/xiabob/XBCornerRadius/tree/master/XBCornerRadiusDemo) project
