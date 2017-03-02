@@ -100,19 +100,32 @@ class imageCell: UITableViewCell {
     }()
     
     lazy var thirdImage: UIImageView = { [unowned self] in
-        let view: UIImageView = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
+        let view = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
         view.xb_setCornerRadius((height-10)/2)
+        //可以多次设置，以最后一次设置为准
         view.xb_setCornerRadii(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
     }()
     
+    lazy var button: UIButton = {
+        let button = UIButton(frame: CGRect(x: self.thirdImage.frame.maxX+10, y: 5, width: 100, height: height-10))
+        button.backgroundColor = .gray
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.orange, for: .highlighted)
+        button.xb_setCornerRadius((height-10)/2, backgroundColor: .white, corners: UIRectCorner.topRight.union(.bottomRight))
+        button.setTitle("这是个按钮", for: .normal)
+        return button
+    }()
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         addSubview(firstImage)
         addSubview(secondImage)
         addSubview(thirdImage)
+        addSubview(button)
     }
     
     required init?(coder aDecoder: NSCoder) {

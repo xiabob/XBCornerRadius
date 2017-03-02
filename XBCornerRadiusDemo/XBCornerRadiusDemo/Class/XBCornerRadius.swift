@@ -18,10 +18,10 @@ public extension UIView {
     }
     
     public func xb_setCornerRadius(_ radius: CGFloat, backgroundColor: UIColor, corners: UIRectCorner) {
-        xb_setCornerRadii(CGSize(width: radius, height: radius), backgroundColor: backgroundColor, corners: corners)
+        xb_setCornerRadii(CGSize(width: radius, height: radius), backgroundColor: backgroundColor, corners: corners, borderColor: nil, borderWidth: nil)
     }
     
-    public func xb_setCornerRadii(_ cornerRadii: CGSize, backgroundColor: UIColor, corners: UIRectCorner, borderColor: UIColor? = nil, borderWidth: CGFloat? = nil) {
+    public func xb_setCornerRadii(_ cornerRadii: CGSize, backgroundColor: UIColor, corners: UIRectCorner, borderColor: UIColor?, borderWidth: CGFloat?) {
         layer.xb_roundedCorner(cornerRadii, cornerColor: backgroundColor, corners: corners, borderColor: borderColor, borderWidth: borderWidth)
     }
 }
@@ -47,22 +47,21 @@ public extension CALayer {
         
         let rect = CGRect(origin: .zero, size: size)
         //outer rect path
-        let rectPath = UIBezierPath(rect: rect.insetBy(dx: 0, dy: 0))
+        let rectPath = UIBezierPath(rect: rect)
         //inner round path
-        let roundPath = UIBezierPath(roundedRect: rect.insetBy(dx:0, dy: 0), byRoundingCorners: corners, cornerRadii: cornerRadii)
+        let roundPath = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: cornerRadii)
         rectPath.append(roundPath)
+        context.addPath(rectPath.cgPath)
         
         //set even-odd fill rule
-        context.addPath(rectPath.cgPath)
         context.__eoFillPath()
         
         //set border
         if let borderColor = borderColor, let borderWidth = borderWidth  {
-            borderColor.set()
+            borderColor.setFill()
             let borderOutterPath = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: cornerRadii)
             let borderInnerPath = UIBezierPath(roundedRect: rect.insetBy(dx: borderWidth, dy: borderWidth), byRoundingCorners: corners, cornerRadii: cornerRadii)
             borderOutterPath.append(borderInnerPath)
-            
             context.addPath(borderOutterPath.cgPath)
             context.__eoFillPath()
         }
