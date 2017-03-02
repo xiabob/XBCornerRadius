@@ -19,7 +19,7 @@ class BigImageViewController: UIViewController {
         
         let bigImage = UIImageView(frame: CGRect(x: 10, y: 74, width: view.bounds.size.width-20, height: view.bounds.size.height-84))
         bigImage.xb_setCornerRadius(30)
-        bigImage.kf.setImage(with: URL(string: link + "#big")!)
+        bigImage.kf.setImage(with: URL(string: link)!)
         view.addSubview(bigImage)
     }
 
