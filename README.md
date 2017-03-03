@@ -12,7 +12,7 @@ iPhone 4s and iOS8
 # Requirements
 * iOS7.0+
 * Xcode 8+ 
-* swift 3
+* swift 3 or Objective-C
 
 # Usage
 <pre>
