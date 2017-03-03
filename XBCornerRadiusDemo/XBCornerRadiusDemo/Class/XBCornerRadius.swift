@@ -22,6 +22,12 @@ public extension UIView {
     }
     
     public func xb_setCornerRadii(_ cornerRadii: CGSize, backgroundColor: UIColor, corners: UIRectCorner, borderColor: UIColor?, borderWidth: CGFloat?) {
+        if self is UIImageView {
+            //only scaleAspectFill not cause offscreen-renderd, do this for better display
+            contentMode = .scaleAspectFill
+            clipsToBounds = true
+        }
+        
         layer.xb_roundedCorner(cornerRadii, cornerColor: backgroundColor, corners: corners, borderColor: borderColor, borderWidth: borderWidth)
     }
 }

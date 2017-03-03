@@ -77,8 +77,6 @@ class imageCell: UITableViewCell {
         let view = UIImageView(frame: CGRect(x: 12, y: 5, width: height-10, height: height-10))
 //        view.xb_setCornerRadius((height-10)/2) //swift
         view.xb_setRoundedCorner((height-10)/2) //oc
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
         return view
     }()
     
@@ -86,8 +84,6 @@ class imageCell: UITableViewCell {
         let view = UIImageView(frame: CGRect(x: self.firstImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
 //        view.xb_setCornerRadius(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight)) //swift
         view.xb_setRoundedCorner(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight)) //oc
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
         return view
     }()
     
@@ -101,9 +97,6 @@ class imageCell: UITableViewCell {
         //oc
         view.xb_setRoundedCorner((height-10)/2)
         view.xb_setRoundedCorner(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
-        
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
         return view
     }()
     

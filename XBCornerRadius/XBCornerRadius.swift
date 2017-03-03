@@ -18,10 +18,16 @@ public extension UIView {
     }
     
     public func xb_setCornerRadius(_ radius: CGFloat, backgroundColor: UIColor, corners: UIRectCorner) {
-        xb_setCornerRadii(CGSize(width: radius, height: radius), backgroundColor: backgroundColor, corners: corners)
+        xb_setCornerRadii(CGSize(width: radius, height: radius), backgroundColor: backgroundColor, corners: corners, borderColor: nil, borderWidth: nil)
     }
     
-    public func xb_setCornerRadii(_ cornerRadii: CGSize, backgroundColor: UIColor, corners: UIRectCorner, borderColor: UIColor? = nil, borderWidth: CGFloat? = nil) {
+    public func xb_setCornerRadii(_ cornerRadii: CGSize, backgroundColor: UIColor, corners: UIRectCorner, borderColor: UIColor?, borderWidth: CGFloat?) {
+        if self is UIImageView {
+            //only scaleAspectFill not cause offscreen-renderd, do this for better display
+            contentMode = .scaleAspectFill
+            clipsToBounds = true
+        }
+        
         layer.xb_roundedCorner(cornerRadii, cornerColor: backgroundColor, corners: corners, borderColor: borderColor, borderWidth: borderWidth)
     }
 }
@@ -37,19 +43,17 @@ public extension CALayer {
             }
         }
         
-        let size = bounds.size
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 0)
         guard let context = UIGraphicsGetCurrentContext() else {return}
         
         //draw round corner by using eo rule
         context.setLineWidth(0)
         cornerColor.setFill()
         
-        let rect = CGRect(origin: .zero, size: size)
         //outer rect path
-        let rectPath = UIBezierPath(rect: rect)
+        let rectPath = UIBezierPath(rect: bounds)
         //inner round path
-        let roundPath = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: cornerRadii)
+        let roundPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: cornerRadii)
         rectPath.append(roundPath)
         context.addPath(rectPath.cgPath)
         
@@ -59,8 +63,8 @@ public extension CALayer {
         //set border
         if let borderColor = borderColor, let borderWidth = borderWidth  {
             borderColor.setFill()
-            let borderOutterPath = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: cornerRadii)
-            let borderInnerPath = UIBezierPath(roundedRect: rect.insetBy(dx: borderWidth, dy: borderWidth), byRoundingCorners: corners, cornerRadii: cornerRadii)
+            let borderOutterPath = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: cornerRadii)
+            let borderInnerPath = UIBezierPath(roundedRect: bounds.insetBy(dx: borderWidth, dy: borderWidth), byRoundingCorners: corners, cornerRadii: cornerRadii)
             borderOutterPath.append(borderInnerPath)
             context.addPath(borderOutterPath.cgPath)
             context.__eoFillPath()
@@ -69,12 +73,14 @@ public extension CALayer {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
+        //直接使用shapelayer本身绘制没有使用图片性能高效，滑动不流畅(??)
         let subLayer = _RoundedCornerLayer()
         subLayer.frame = bounds
         subLayer.isOpaque = true
         subLayer.contents = image?.cgImage
         self.addSublayer(subLayer)
     }
+    
 }
 
 

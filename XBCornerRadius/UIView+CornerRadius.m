@@ -102,6 +102,12 @@
                     corners:(UIRectCorner)corners
                 borderColor:(nullable UIColor *)borderColor
                 borderWidth:(CGFloat)borderWidth {
+    //only scaleAspectFill not cause offscreen-renderd, do this for better display
+    if ([self isKindOfClass:[UIImageView class]]) {
+        self.contentMode = UIViewContentModeScaleAspectFill;
+        self.clipsToBounds = YES;
+    }
+    
     [self.layer xb_setRoundedCorner:cornerRadii cornerColor:backgroundColor corners:corners borderColor:borderColor borderWidth:borderWidth];
 }
 
