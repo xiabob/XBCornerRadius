@@ -1,5 +1,5 @@
 # XBCornerRadius
-Make cornerRadius for UIView by swift
+Make cornerRadius for UIView
 
 # Performance
 iPhone 4s and iOS8
