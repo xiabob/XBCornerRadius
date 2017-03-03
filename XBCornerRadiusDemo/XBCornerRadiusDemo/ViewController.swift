@@ -75,7 +75,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 class imageCell: UITableViewCell {
     lazy var firstImage: UIImageView = {
         let view = UIImageView(frame: CGRect(x: 12, y: 5, width: height-10, height: height-10))
-        view.xb_setCornerRadius((height-10)/2)
+//        view.xb_setCornerRadius((height-10)/2) //swift
+        view.xb_setRoundedCorner((height-10)/2) //oc
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
@@ -83,17 +84,24 @@ class imageCell: UITableViewCell {
     
     lazy var secondImage: UIImageView = { [unowned self] in
         let view = UIImageView(frame: CGRect(x: self.firstImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
-        view.xb_setCornerRadius(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight))
+//        view.xb_setCornerRadius(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight)) //swift
+        view.xb_setRoundedCorner(12, backgroundColor: .white, corners: UIRectCorner.topLeft.union(.bottomRight)) //oc
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
     }()
     
     lazy var thirdImage: UIImageView = { [unowned self] in
-        let view = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
-        view.xb_setCornerRadius((height-10)/2)
-        //可以多次设置，以最后一次设置为准
-        view.xb_setCornerRadii(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
+        let view: UIImageView = UIImageView(frame: CGRect(x: self.secondImage.frame.maxX+10, y: 5, width: height-10, height: height-10))
+        //swift
+//        view.xb_setCornerRadius((height-10)/2)
+//        //可以多次设置，以最后一次设置为准
+//        view.xb_setCornerRadii(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
+        
+        //oc
+        view.xb_setRoundedCorner((height-10)/2)
+        view.xb_setRoundedCorner(CGSize(width: (height-10)/2, height: (height-10)/2), backgroundColor: .white, corners: .allCorners, borderColor: .orange, borderWidth: 5)
+        
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
