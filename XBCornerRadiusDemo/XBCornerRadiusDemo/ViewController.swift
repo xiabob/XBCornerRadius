@@ -76,7 +76,7 @@ class imageCell: UITableViewCell {
     lazy var firstImage: UIImageView = {
         let view = UIImageView(frame: CGRect(x: 12, y: 5, width: height-10, height: height-10))
 //        view.xb_setCornerRadius((height-10)/2) //swift
-        view.xb_setRoundedCorner((height-10)/2) //oc
+//        view.xb_setRoundedCorner((height-10)/2) //oc
         return view
     }()
     
@@ -125,6 +125,7 @@ class imageCell: UITableViewCell {
     
     func updateWithUrl(_ url: URL) {
         firstImage.kf.setImage(with: url)
+        firstImage.xb_setCornerRadius((height-10)/2)
         
         secondImage.kf.setImage(with: url)
 

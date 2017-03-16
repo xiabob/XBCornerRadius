@@ -35,6 +35,14 @@ public extension UIView {
 
 public extension CALayer {
     public func xb_roundedCorner(_ cornerRadii: CGSize, cornerColor: UIColor, corners: UIRectCorner, borderColor: UIColor?, borderWidth: CGFloat?) {
+        let key = "Identifier_\(cornerRadii)_\(cornerColor)_\(corners)_\(borderColor)_\(borderWidth)"
+        if key == _cornerLayerIdentifier {
+            //无需重复设置
+            return
+        } else {
+            _cornerLayerIdentifier = key
+        }
+        
         //remove exit layer
         for layer in sublayers ?? [] {
             if layer is _RoundedCornerLayer {
@@ -81,7 +89,24 @@ public extension CALayer {
         self.addSublayer(subLayer)
     }
     
+
+    private struct XBAssociatedKeys {
+        static var cornerLayerIdentifierKey = "xb_cornerLayerIdentifierKey"
+    }
+    
+    private var _cornerLayerIdentifier: String? {
+        get {
+            return objc_getAssociatedObject(self, &XBAssociatedKeys.cornerLayerIdentifierKey) as? String
+        }
+        
+        set {
+            objc_setAssociatedObject(self, &XBAssociatedKeys.cornerLayerIdentifierKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    
 }
+
 
 
 //MARK: - _RoundedCornerLayer
